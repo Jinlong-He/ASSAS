@@ -13,14 +13,14 @@
 #include <string>
 #include <ostream>
 #include <fstream>
-#include "ASM.hpp"
-#include "utility/Utility.hpp"
+#include "ASM/ASM.hpp"
+#include "../../Utility/Utility.hpp"
 using namespace std;
 namespace assas {
-    enum error {lmdError, unmatchError, noMainError};
+    enum Error {lmdError, aftError, unmatchError, noMainError};
     typedef vector<string> strings;
     typedef unordered_map<string, Activity*> ActMap;
-    typedef unordered_map<string, Aft> AftMap;
+    typedef unordered_map<string, Affinity*> AftMap;
     /// \brief This class is to get information via reading files.
     class Parse {
     private:
@@ -38,7 +38,9 @@ namespace assas {
         /// \param a The ASM.
         Parse(const string& infoFileName, const string& transFileName, ASM* a) : a(a) {
             readInfoFile(infoFileName);
-            //readTransitionGragh(transFileName);
+            readTransitionGragh(transFileName);
+            a -> rmUselessActivities();
+            cout << *a << endl;
         }
 
         /// \brief Default desconstruction function.
@@ -54,7 +56,7 @@ namespace assas {
 
         /// \brief Writes errors.
         /// \param error The type of error.
-        void writeErr(int error);
+        void writeErr(Error error);
     };
 }
 

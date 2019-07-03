@@ -9,7 +9,6 @@
 #include "Parse.hpp"
 
 namespace assas {
-
     void readFile(const string& fileName, strings& strs) {
         string str;
         ifstream file(fileName);
@@ -25,126 +24,123 @@ namespace assas {
     void Parse::readInfoFile(const string& fileName) {
         vector<string> strs;
         readFile(fileName, strs);
-        ID id = 2;
-        ID aftId = 1;
         bool flag = false;
         string name = "";
+        string aftName = "";
         Lmd lmd;
         for (ID i = 0; i < strs.size(); i++) {
             if (strs[i] == "#MAIN") {
                 flag = true;
                 continue;
-            } else if (strs[i] == "#NIAM") {
+            } else if (strs[i] == "NIAM#") {
                 flag = false;
                 continue;
             } else {
                 name = Utility::split(strs[i++], ":")[1];
                 string lmdStr = Utility::split(strs[i], ":")[1];
                 if (lmdStr == "std") {
-                    lmd = lmd_std;
+                    lmd = Lmd::STD;
                 } else if (lmdStr == "stk") {
-                    lmd = lmd_stk;
+                    lmd = Lmd::STK;
                 } else if (lmdStr == "stp") {
-                    lmd = lmd_stp;
+                    lmd = Lmd::STP;
                 } else if (lmdStr == "sit") {
-                        lmd = lmd_sit;
+                    lmd = Lmd::SIT;
                 } else {
-                    //writeErr(lmdError);
+                    writeErr(lmdError);
                 }
             }
-            Aft aft;
-            string aftStr = "";
+            Affinity* aft = nullptr;
             vector<string> strVec = Utility::split(strs[++i], ":");
             if (strVec.size() > 1) {
-                if (aftMap.count(strVec[1]) == 0)
-                    aftMap[strVec[1]] = "b" + to_string(aftId++);
-                aftStr = aftMap[strVec[1]]; 
-            }
-            if (aftStr.length() == 0 || aftStr == " ") {
-                aft = "e" + to_string(aftId++);
+                aftName = strVec[1];
             } else {
-                aft = aftStr;
+                aftName = " ";
+            }
+            if (aftName == " ") {
+                aft = a -> mkAffinity(aftName);
+            } else {
+                aft = aftMap[aftName];
+                if (aft == nullptr) {
+                    aft = a -> mkAffinity(aftName);
+                    aftMap[aftName] = aft;
+                }
             }
             Activity* act = nullptr;
             if (flag) {
-                act = a -> mkMainActivity(name, id++, aft, lmd);
+                act = a -> mkMainActivity(name, aft, lmd);
             } else {
-                act = a -> mkActivity(name, id++, aft, lmd);
+                act = a -> mkActivity(name, aft, lmd);
             }
             actMap[name] = act;
+        }
+    }
+
+    void Parse::writeErr(Error error) {
+        delete a;
+        switch (error) {
+            case lmdError :
+                cout << "lmdError" << endl;
+                exit(1);
+            case aftError :
+                cout << "aftError" << endl;
+                exit(1);
+            case unmatchError :
+                cout << "unmatchError" << endl;
+                exit(1);
+            case noMainError :
+                cout << "noMainError" << endl;
+                exit(1);
+        }
+    }
+
+    void Parse::readTransitionGragh(const string& fileName) {
+        vector<string> strs;
+        readFile(fileName, strs);
+        for (ID i = 0; i < strs.size(); i++) {
+            vector<string> strVec = Utility::split(strs[i++], "-->");
+            Activity* sAct = actMap[strVec[0]];
+            Activity* tAct = actMap[strVec[1]];
+            if (!(sAct && tAct)) {
+                writeErr(unmatchError);
+            }
+            strVec.clear();
+            if (strs[i].find(':') != strs[i].size() - 1)
+                strVec = Utility::split(Utility::split(strs[i], ":")[1], " ");
+            FLAGs flags;
+            Alpha alpha = start;
+            for (string str : strVec) {
+                if(str.find("FLAG_ACTIVITY_NEW_TASK") != -1) {
+                    flags.push_back(NTK);
+                } else if(str.find("FLAG_ACTIVITY_CLEAR_TASK") != -1) {
+                    flags.push_back(CTK);
+                } else if(str.find("FLAG_ACTIVITY_CLEAR_TOP") != -1) {
+                    flags.push_back(CTP);
+                } else if(str.find("FLAG_ACTIVITY_REORDER_TO_FRONT") != -1) {
+                    flags.push_back(RTF);
+                } else if(str.find("FLAG_ACTIVITY_SINGLE_TOP") != -1) {
+                    flags.push_back(STP);
+                } else if(str.find("FLAG_ACTIVITY_MULTIPLE_TASK") != -1) {
+                    flags.push_back(MTK);
+                } else if(str.find("FLAG_ACTIVITY_TASK_ON_HOME") != -1) {
+                    flags.push_back(TOH);
+                } else if(str.find("finish") != -1) {
+                    alpha = finish;
+                } else {
+                    continue;
+                }
+            }
+            sAct -> addLaunchActivity(tAct, flags, alpha);
+        }
+        if (a -> getMainActivity() -> getLaunchMap().size() == 0) {
+            writeErr(noMainError);
         }
     }
 }
 
 
 
-//void Parse::readTransitionGragh(const string& fileName)
-//{
-//    bool main = false;
-//    vector<string> strs;
-//    string str;
-//    ifstream file(fileName);
-//    if(!file) return;
-//    while(!file.eof())
-//    {
-//        getline(file, str);
-//        if(!str.empty())
-//            strs.push_back(str);
-//    }
-//    ID id = 1;
-//    for(ID i = 0; i < strs.size(); i++)
-//    {
-//        vector<string> strVec = Utility::split(strs[i++], "-->");
-//        Activity* sAct = nullptr;
-//        Activity* tAct = nullptr;
-//        for (auto& mapPair : str2ActMap) {
-//            if (mapPair.first.find(strVec[0]) != string::npos)
-//                sAct = mapPair.second;
-//            if (mapPair.first.find(strVec[1]) != string::npos)
-//                tAct = mapPair.second;
-//        }
-//        if (!(sAct && tAct)) {
-//            continue;
-//            writeErr(unmatchError);
-//        }
-//        if (sAct == mainActivity)
-//            main = true;
-//        strVec.clear();
-//        if(strs[i].find(':') != strs[i].size() - 1)
-//            strVec = Utility::split(Utility::split(strs[i], ":")[1], " ");
-//        Flags flags;
-//        bool finish = false;
-//        for(string str : strVec)
-//        {
-//            if(str.find("FLAG_ACTIVITY_NEW_TASK") != -1)
-//                flags.push_back(NTK);
-//            else if(str.find("FLAG_ACTIVITY_CLEAR_TASK") != -1)
-//                flags.push_back(CTK);
-//            else if(str.find("FLAG_ACTIVITY_CLEAR_TOP") != -1)
-//                flags.push_back(CTP);
-//            else if(str.find("FLAG_ACTIVITY_REORDER_TO_FRONT") != -1)
-//                flags.push_back(RTF);
-//            else if(str.find("FLAG_ACTIVITY_SINGLE_TOP") != -1)
-//                flags.push_back(STP);
-//            else if(str.find("FLAG_ACTIVITY_MULTIPLE_TASK") != -1)
-//                flags.push_back(MTK);
-//            else if(str.find("FLAG_ACTIVITY_TASK_ON_HOME") != -1)
-//                flags.push_back(TOH);
-//            else if(str.find("finish") != -1)
-//                finish = true;
-//            else continue;
-//        }
-//        tAct -> addDegree();
-//        tAct -> addInDegree();
-//        Action* action = new Action(sAct, tAct, flags, finish, id++);
-//        actions.insert(action);
-//        sAct -> addAction(action);
-//    }
-//    if (!main) writeErr(noMainError);
-//    
-//    file.close();
-//    RmvUselessTrans();
-//}
+
 //
 //void Parse::getClosure(Activity* act, Acts& visited) {
 //    for (Action* action : act -> getActions()) {
@@ -184,21 +180,4 @@ namespace assas {
 //    afts.insert(liveAfts.begin(), liveAfts.end());
 //}
 //
-//void Parse::writeErr(int error) {
-//    ofstream errorfile;
-//    errorfile.open("error.txt", ios::app);
-//    errorfile << infoFileName << endl;
-//    if (error == lmError) {
-//        errorfile << "lunchMode error" << endl;
-//        errorfile.close();
-//        exit(1);
-//    } else if (error == unmatchError) {
-//        errorfile << "unmatch error" << endl;
-//        errorfile.close();
-//        exit(2);
-//    } else if (error == noMainError) {
-//        errorfile << "noMain error" << endl;
-//        errorfile.close();
-//        exit(3);
-//    }
-//}
+

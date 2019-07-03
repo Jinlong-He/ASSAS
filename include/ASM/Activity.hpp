@@ -1,0 +1,151 @@
+//
+//  Activity.hpp
+//  ASM
+//
+//  Created by Jinlong He on 2019/6/23.
+//  Copyright © 2019年 Jinlong He. All rights reserved.
+//
+
+#ifndef Activity_hpp
+#define Activity_hpp
+
+#include "Action.hpp"
+
+namespace assas {
+    class Activity;
+    class Affinity;
+    class Action;
+    class ASM;
+    enum class Lmd {STD, STK, STP, SIT};
+    typedef unordered_set<Activity*> Acts;
+    typedef unordered_set<Affinity*> Afts;
+    typedef vector<Activity*> ActVec;
+    typedef unordered_map<Activity*, Actions> LaunchMap;
+
+    /// \brief Affinity in the Android system.
+    class Affinity {
+    private:
+        static ID counter;          ///< the counter for Aft's id.
+        ID id;                      ///< the uniqe identity of this Aft.
+        string affinityName;        ///< the name of this Aft.
+    public:
+        Affinity() {}
+        ~Affinity() {}
+        Affinity(const string& name) : id(counter++), affinityName(name) {}
+        ID getID() const {
+            return id;
+        }
+        const string& getName() const {
+            return affinityName;
+        }
+        string& getName() {
+            return affinityName;
+        }
+        friend ostream & operator<<( ostream & os, const Affinity& affinity) {
+            cout << affinity.affinityName;
+            return os;
+        }
+    };
+
+    /// \brief Activity in the Android system.
+    class Activity {
+    private:
+        static ID counter;          ///< the counter for Activity's id.
+        ID id;                      ///< the uniqe identity of this Activity.
+        Affinity* affinity;         ///< the afinity attribute for this Activity.
+        Lmd launchMode;             ///< the launch mode for this Activity.
+        string activityName;        ///< the name for this Activity.
+        LaunchMap launchMap;        ///< the launch map for this Activity.
+
+        void getLaunchActs(Acts& acts) {
+            for (auto& mapPair : launchMap) {
+                acts.insert(mapPair.first);
+            }
+        }
+
+    public:
+        /// \brief Default construction function.
+        Activity() : affinity(nullptr) {}
+        
+        /// \brief Default desconstruction function.
+        ~Activity() {
+            for (auto& mapPair : launchMap) {
+                for (Action* action : mapPair.second) {
+                    delete action;
+                }
+            }
+        }
+
+        /// \brief Construction function with params.
+        /// \param name The name for this Activity.
+        /// \param i The identity for this Activity.
+        /// \param lmd The lunch mode for this Activity. default is STD.
+        /// \param aft The affinity for this Activity. default is "".
+        Activity(const string& name,  Affinity* aft, Lmd lmd = Lmd::STD) : id(counter++),  affinity(aft), launchMode(lmd), activityName(name) {}
+        
+        /// \brief Gets the id for this Activity.
+        /// \return ID.
+        ID getID() const {
+            return id;
+        }
+
+        /// \brief Gets the affinity for this Activity.
+        /// \return Pointer of Affinity.
+        Affinity* getAft() const {
+            return affinity;
+        }
+
+        /// \brief Gets the launch mode for this Activity.
+        /// \return Lmd.
+        Lmd getLmd() const {
+            return launchMode;
+        }
+
+        /// \brief Gets the name for this Activity.
+        /// \return string.
+        const string& getName() const {
+            return activityName;
+        }
+
+        string& getName() {
+            return activityName;
+        }
+
+        /// \brief Gets the launch map fot this Activity.
+        /// \return reference of LaunchMap.
+        const LaunchMap& getLaunchMap() const {
+            return launchMap;
+        }
+
+        LaunchMap& getLaunchMap() {
+            return launchMap;
+        }
+
+        /// \brief Gets the launch activities for this Activity.
+        /// \return const reference of Acts.
+        const Acts getLaunchActs() {
+            Acts acts;
+            getLaunchActs(acts);
+            return acts;
+        }
+
+        /// \brief Adds the Launch Activity for this Activity.
+        /// \param act Activity to be lauched from this Activity.
+        void addLaunchActivity(Activity* act) {
+            Action* action = new Action();
+            launchMap[act].insert(action);
+        }
+        void addLaunchActivity(Activity* act, const FLAGs& fs, Alpha a = start) {
+            Action* action = new Action(fs, a);
+            launchMap[act].insert(action);
+        }
+
+        /// \brief Overwrites <<.
+        friend ostream & operator<<( ostream & os, const Activity& activity);
+
+        friend ASM;
+
+    };
+}
+
+#endif /* Activity_hpp */
