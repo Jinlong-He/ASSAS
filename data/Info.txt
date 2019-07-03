@@ -1,0 +1,14 @@
+#MAIN
+activity:A
+LaunchMode:std
+TaskAffinity:1
+NIAM#
+
+activity:B
+LaunchMode:std
+TaskAffinity:1
+
+activity:C
+LaunchMode:std
+TaskAffinity:2
+
