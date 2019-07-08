@@ -13,10 +13,6 @@
 
 namespace assas {
 
-    typedef size_t Symbol;
-    enum class Beta {pop, start, finish, START, FINISH};
-    enum class Type {PUSH, CTK, CTP, STP, RTF, LTK};
-
     /// \brief Operation in DNSS.
     class Operation {
     protected:

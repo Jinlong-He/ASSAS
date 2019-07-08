@@ -2,7 +2,11 @@
 namespace assas {
     Operation* DNSS::mkOperation(Symbol symbol, Beta beta, Type type, Symbol tSymbol) {
         Operation* operation = new Operation(beta, type, tSymbol);
-        operationsMap[symbol].insert(operation);
+        if (beta == Beta::START || beta == Beta::FINISH) {
+            superOpsMap[symbol].insert(operation);
+        } else {
+            operationsMap[symbol].insert(operation);
+        }
         return operation;
     }
 
@@ -12,6 +16,7 @@ namespace assas {
             Symbol symbol = act -> getID();
             Lmd lmd = act -> getLmd();
             Address address = act -> getAft() -> getID();
+            addresses.insert(address);
             alphabet.insert(symbol);
             addressMap[symbol] = address;
             for (auto& mapPair : act -> getLaunchMap()) {
@@ -53,8 +58,14 @@ namespace assas {
             }
         }
     }
+
     ostream & operator<<( ostream & os, const DNSS& dnss) {
         for (auto& mapPair : dnss.operationsMap) {
+            for (Operation* op : mapPair.second) {
+                cout << mapPair.first << "->" << *op << endl;
+            }
+        }
+        for (auto& mapPair : dnss.superOpsMap) {
             for (Operation* op : mapPair.second) {
                 cout << mapPair.first << "->" << *op << endl;
             }

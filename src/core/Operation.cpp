@@ -1,4 +1,4 @@
-#include"DNSS/Operation.hpp"
+#include "DNSS/Operation.hpp"
 namespace assas {
     ostream & operator<<( ostream & os, const Operation& o) {
         switch (o.beta) {

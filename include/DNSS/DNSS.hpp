@@ -12,20 +12,18 @@
 #include "Operation.hpp"
 
 namespace assas {
-    class Operation;
-    typedef size_t Address;
-    typedef unordered_set<Symbol> Symbols;
-    typedef unordered_set<Operation*> Operations;
-    typedef unordered_map<Symbol, Address> AddressMap;
-    typedef unordered_map<Symbol, Operations> OperationsMap;
 
     /// \breif Doubly Nested Stack System.
     class DNSS {
     private:
         Symbol initialSymbol;           ///< the initial symbol for this DNSS.
         Symbols alphabet;               ///< the alphabet for this DNSS.
+        Addresses addresses;            ///< the addresses for this DNSS.
         AddressMap addressMap;          ///< the address map for this DNSS.
         OperationsMap operationsMap;    ///< the operations map for this DNSS.
+        OperationsMap superOpsMap;      ///< the operations map for this DNSS.
+        bool stackBoundedness;          ///< true for stack boundedness.
+
     public:
         /// \brief Default construction function.
         DNSS() {}
@@ -45,6 +43,69 @@ namespace assas {
         /// \param tSymbol Target symbol.
         /// \return Pointer of Operation.
         Operation* mkOperation(Symbol symbol, Beta beta, Type type, Symbol tSymbol);
+
+        /// \brief Gets initial symbol.
+        /// \return Symbol.
+        Symbol getInitialSymbol() const {
+            return initialSymbol;
+        }
+
+        /// \brief Gets alphabet.
+        /// \return reference of Symbols.
+        Symbols& getAlphabet() {
+            return alphabet;
+        }
+
+        const Symbols& getAlphabet() const {
+            return alphabet;
+        }
+
+        /// \brief Gets addresses.
+        /// \return reference of Addresses.
+        Addresses& getAddresses() {
+            return addresses;
+        }
+
+        const Addresses& getAddresses() const {
+            return addresses;
+        }
+
+        /// \brief Gets address map.
+        /// \return reference of AddressMap
+        AddressMap& getAddressMap() {
+            return addressMap;
+        }
+
+        const AddressMap& getAddressMap() const {
+            return addressMap;
+        }
+
+        /// \brief Gets operations map.
+        /// \return reference of OperationsMap.
+        OperationsMap& getOperationsMap() {
+            return operationsMap;
+        }
+
+        OperationsMap& getSuperOperationsMap() {
+            return superOpsMap;
+        }
+
+        const OperationsMap& getOperationsMap() const {
+            return operationsMap;
+        }
+
+        const OperationsMap& getSuperOperationsMap() const {
+            return superOpsMap;
+        }
+
+        /// \brief Gets stack boundedness.
+        /// \return Boolean.
+        bool isStackBounded() const {
+            return stackBoundedness;
+        }
+
+        /// \brief Decides whether this DNSS is stack bounded.
+        void decideStackBounded();
 
         friend ostream & operator<<( ostream & os, const DNSS& dnss);
     };

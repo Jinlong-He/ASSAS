@@ -32,7 +32,6 @@ RegularExp.hpp
 
 # Make.properties
 ./Make.properties
-asm
 assam
 
 # Codeblocks project files

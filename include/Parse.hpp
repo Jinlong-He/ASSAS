@@ -9,24 +9,16 @@
 #ifndef Parse_hpp
 #define Parse_hpp
 
-#include <stdio.h>
-#include <string>
-#include <ostream>
-#include <fstream>
 #include "ASM/ASM.hpp"
-#include "../../Utility/Utility.hpp"
-using namespace std;
+
 namespace assas {
-    enum Error {lmdError, aftError, unmatchError, noMainError};
-    typedef vector<string> strings;
-    typedef unordered_map<string, Activity*> ActMap;
-    typedef unordered_map<string, Affinity*> AftMap;
+
     /// \brief This class is to get information via reading files.
     class Parse {
     private:
-        ASM* a;
-        ActMap actMap;
-        AftMap aftMap;
+        ASM* a;             ///< the ASM.
+        ActMap actMap;      ///< Activity map.
+        AftMap aftMap;      ///< Affinity map.
 
     public:
         /// \brief Default construction function.

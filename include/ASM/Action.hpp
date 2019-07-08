@@ -9,24 +9,11 @@
 #ifndef Action_hpp
 #define Action_hpp
 
-#include <stdio.h>
-#include <string>
-#include <vector>
-#include <list>
-#include <unordered_map>
-#include <unordered_set>
-#include <iostream>
-#include <math.h>
+#include "../Alias.hpp"
 
 using namespace std;
 
 namespace assas {
-    class Action;
-    enum FLAG {CTK, CTP, NTK, RTF, STP, MTK, TOH};
-    enum Alpha {start, finish};
-    typedef size_t ID;
-    typedef vector<FLAG> FLAGs;
-    typedef unordered_set<Action*> Actions;
 
     /// \breif Action in the Android system.
     class Action {

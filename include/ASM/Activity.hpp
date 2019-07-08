@@ -16,11 +16,6 @@ namespace assas {
     class Affinity;
     class Action;
     class ASM;
-    enum class Lmd {STD, STK, STP, SIT};
-    typedef unordered_set<Activity*> Acts;
-    typedef unordered_set<Affinity*> Afts;
-    typedef vector<Activity*> ActVec;
-    typedef unordered_map<Activity*, Actions> LaunchMap;
 
     /// \brief Affinity in the Android system.
     class Affinity {
