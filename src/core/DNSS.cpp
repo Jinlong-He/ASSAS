@@ -7,6 +7,7 @@ namespace assas {
         } else {
             operationsMap[symbol].insert(operation);
         }
+        Manage::manage(operation);
         return operation;
     }
 

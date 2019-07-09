@@ -14,7 +14,7 @@
 namespace assas {
 
     /// \breif Android Stack Machine.
-    class ASM {
+    class ASM : public Object {
     private:
         Acts activities;            ///< the Activity set in ASM.
         Afts affinities;            ///< the Affinity set in ASM.
@@ -26,13 +26,6 @@ namespace assas {
 
         /// \brief Default desconstruction function.
         ~ASM() {
-            for (Activity* act : activities) {
-                delete act;
-            }
-            for (Affinity* aft : affinities) {
-                delete aft;
-            }
-            mainActivity = nullptr;
         }
 
         /// \brief Makes Activity in ASM.
@@ -43,6 +36,7 @@ namespace assas {
         Activity* mkActivity(const string& name, Affinity* aft, Lmd lmd =Lmd::STD) {
             Activity* activity = new Activity(name, aft, lmd);
             activities.insert(activity);
+            Manage::manage(activity);
             return activity;
         }
 
@@ -61,6 +55,7 @@ namespace assas {
         Affinity* mkAffinity(const string& name) {
             Affinity* affinity = new Affinity(name);
             affinities.insert(affinity);
+            Manage::manage(affinity);
             return affinity;
         }
 

@@ -1,3 +1,6 @@
+#ifndef ASSASAlias_hpp
+#define ASSASAlias_hpp
+
 #include <stdio.h>
 #include <string>
 #include <vector>
@@ -20,6 +23,8 @@ namespace assas {
     class Operation;
     class DNSS;
     class NuXmv;
+    class Object;
+    class Manage;
 
     enum Alpha {start, finish};
     enum FLAG {CTK, CTP, NTK, RTF, STP, MTK, TOH};
@@ -61,3 +66,5 @@ namespace assas {
     typedef unordered_map<Symbol, Operations> OperationsMap;
     typedef unordered_map<Address, OperationsMap> Add2OperationsMap;
 }
+
+#endif /* ASSASAlias_hpp */

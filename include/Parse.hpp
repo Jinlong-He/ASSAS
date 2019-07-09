@@ -14,7 +14,7 @@
 namespace assas {
 
     /// \brief This class is to get information via reading files.
-    class Parse {
+    class Parse : public Object {
     private:
         ASM* a;             ///< the ASM.
         ActMap actMap;      ///< Activity map.

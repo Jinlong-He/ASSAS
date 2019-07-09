@@ -13,8 +13,8 @@
 namespace assas {
 
     /// \brief Interface of Reachabilityability Solver.
-    class ReachabilitySolver {
-    private:
+    class ReachabilitySolver : public Object{
+    protected:
         DNSS* dnss;         ///< the DNSS to be solved.
     public:
         /// \brief Default construction function.
@@ -28,7 +28,7 @@ namespace assas {
         }
 
         /// \brief Gets reachable symbols and operations for each address.
-        void getReachableSymbolsAndOpsMap(Add2SymbolsMap& initialSymbolMap, Add2SymbolsMap& add2SymbolsMap, Add2OperationsMap& add2OpsMap);
+        void getReachableSymbolsAndOpsMap(Add2SymbolsMap& initialSymbolsMap, Add2SymbolsMap& add2SymbolsMap, Add2OperationsMap& add2OpsMap);
 
         /// \brief Gets initial symbols for each address.
         /// \param initialSymbolsMap initial symbols map.
@@ -38,6 +38,13 @@ namespace assas {
         /// \param regEx Given configuration.
         /// \return Boolean.
         virtual bool isReachable(const RegEx& regEx) = 0;
+
+        /// \brief Gets Address of param symbol.
+        /// \param symbol
+        /// \return Address.
+        Address getAddress(Symbol symbol) {
+            return dnss -> getAddressMap()[symbol];
+        }
 
     };
 }

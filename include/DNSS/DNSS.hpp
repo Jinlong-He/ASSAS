@@ -14,7 +14,7 @@
 namespace assas {
 
     /// \breif Doubly Nested Stack System.
-    class DNSS {
+    class DNSS : public Object {
     private:
         Symbol initialSymbol;           ///< the initial symbol for this DNSS.
         Symbols alphabet;               ///< the alphabet for this DNSS.
@@ -32,6 +32,9 @@ namespace assas {
         /// \param a ASM.
         DNSS(ASM* a) {
             load(a);
+        }
+
+        ~DNSS() {
         }
 
         void load(ASM* a);

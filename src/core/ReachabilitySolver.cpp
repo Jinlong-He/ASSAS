@@ -7,16 +7,16 @@ namespace assas {
         for (auto& mapPair : dnss -> getSuperOperationsMap()) {
             for (Operation* op : mapPair.second) {
                 Symbol symbol = op -> getSymbol();
-                initialSymbolMap[symbol].insert(symbol);
+                initialSymbolMap[getAddress(symbol)].insert(symbol);
             }
         }
     }
 
-    void ReachabilitySolver::getReachableSymbolsAndOpsMap(Add2SymbolsMap& initialSymbolMap, Add2SymbolsMap& add2SymbolsMap, Add2OperationsMap& add2OpsMap) {
+    void ReachabilitySolver::getReachableSymbolsAndOpsMap(Add2SymbolsMap& initialSymbolsMap, Add2SymbolsMap& add2SymbolsMap, Add2OperationsMap& add2OpsMap) {
         Symbols work, newWork;
         OperationsMap& operationsMap = dnss -> getOperationsMap();
         OperationsMap& superOpsMap = dnss -> getSuperOperationsMap();
-        for (auto& mapPair : initialSymbolMap) {
+        for (auto& mapPair : initialSymbolsMap) {
             work.clear();
             newWork.clear();
             work.insert(mapPair.second.begin(), mapPair.second.end());
@@ -25,22 +25,24 @@ namespace assas {
             OperationsMap& opsMap = add2OpsMap[address];
             while (work.size() > 0) {
                 for (Symbol symbol : work) {
-                    if (operationsMap.count(symbol) == 0) continue;
-                    Operations& operations = operationsMap[symbol];
-                    opsMap[symbol] = operations;
-                    for (Operation* op : operations) {
-                        Symbol targetSymbol = op -> getSymbol();
-                        if (symbols.insert(targetSymbol).second) {
-                            newWork.insert(targetSymbol);
+                    if (operationsMap.count(symbol) > 0) {
+                        Operations& operations = operationsMap[symbol];
+                        opsMap[symbol] = operations;
+                        for (Operation* op : operations) {
+                            Symbol targetSymbol = op -> getSymbol();
+                            if (symbols.insert(targetSymbol).second) {
+                                newWork.insert(targetSymbol);
+                            }
                         }
                     }
-                    if (superOpsMap.count(symbol) == 0) continue;
-                    for (Operation* op : superOpsMap[symbol]) {
-                        Symbol targetSymbol = op -> getSymbol();
-                        if (dnss -> getAddressMap()[targetSymbol] != address) continue;
-                        opsMap[symbol].insert(op);
-                        if (symbols.insert(targetSymbol).second) {
-                            newWork.insert(targetSymbol);
+                    if (superOpsMap.count(symbol) > 0) {
+                        for (Operation* op : superOpsMap[symbol]) {
+                            Symbol targetSymbol = op -> getSymbol();
+                            if (getAddress(targetSymbol) != address) continue;
+                            opsMap[symbol].insert(op);
+                            if (symbols.insert(targetSymbol).second) {
+                                newWork.insert(targetSymbol);
+                            }
                         }
                     }
                 }

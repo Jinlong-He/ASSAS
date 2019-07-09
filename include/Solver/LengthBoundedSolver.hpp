@@ -19,13 +19,11 @@ namespace assas {
         nuxmv::NuXmv nuxvm;                 ///< solve FST reachability.
         ID maxLength;                       ///< the maximal length of stack.
         Add2IDsMap availablePositions;      ///< the available positions for each address.
-        OperationsMap virtualOpsMap;        ///< the virtual operations map for this DNSS.
 
+        void mkVirtualOpsMap(Add2SymbolsMap& add2SymbolsMap, Add2OperationsMap& add2OpsMap);
+    public:
         void mkAvailablePositions();
 
-        void mkVirtualOpsMap();
-
-    public:
         /// \brief Default construction function.
         LengthBoundedSolver() : ReachabilitySolver() {}
 
@@ -34,6 +32,12 @@ namespace assas {
         LengthBoundedSolver(DNSS* s) : ReachabilitySolver(s) {}
 
         ~LengthBoundedSolver() {
+        }
+
+        Operation* mkOperation(Beta beta, Type type, Symbol symbol) {
+            Operation* operation = new Operation(beta, type, symbol);
+            Manage::manage(operation);
+            return operation;
         }
 
         bool isReachable(const RegEx& regEx) {

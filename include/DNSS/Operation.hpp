@@ -14,7 +14,7 @@
 namespace assas {
 
     /// \brief Operation in DNSS.
-    class Operation {
+    class Operation : public Object{
     protected:
         Beta beta;          ///< how to start symbol.
         Type type;          ///< Operation type.

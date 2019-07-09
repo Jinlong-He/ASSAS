@@ -18,7 +18,7 @@ namespace assas {
     class ASM;
 
     /// \brief Affinity in the Android system.
-    class Affinity {
+    class Affinity : public Object {
     private:
         static ID counter;          ///< the counter for Aft's id.
         ID id;                      ///< the uniqe identity of this Aft.
@@ -43,7 +43,7 @@ namespace assas {
     };
 
     /// \brief Activity in the Android system.
-    class Activity {
+    class Activity : public Object {
     private:
         static ID counter;          ///< the counter for Activity's id.
         ID id;                      ///< the uniqe identity of this Activity.
