@@ -18,6 +18,7 @@ namespace assas {
     private:
         Symbol initialSymbol;           ///< the initial symbol for this DNSS.
         Symbols alphabet;               ///< the alphabet for this DNSS.
+        Symbols checkSymbols;           ///> the symbols which are started by CTP or RTF.
         Addresses addresses;            ///< the addresses for this DNSS.
         AddressMap addressMap;          ///< the address map for this DNSS.
         OperationsMap operationsMap;    ///< the operations map for this DNSS.
@@ -59,8 +60,16 @@ namespace assas {
             return alphabet;
         }
 
+        Symbols& getCheckSymbols() {
+            return checkSymbols;
+        }
+
         const Symbols& getAlphabet() const {
             return alphabet;
+        }
+
+        const Symbols& getCheckSymbols() const {
+            return checkSymbols;
         }
 
         /// \brief Gets addresses.

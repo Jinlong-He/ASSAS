@@ -7,6 +7,9 @@ namespace assas {
         } else {
             operationsMap[symbol].insert(operation);
         }
+        if (type == Type::CTP || type == Type::RTF) {
+            checkSymbols.insert(tSymbol);
+        }
         Manage::manage(operation);
         return operation;
     }

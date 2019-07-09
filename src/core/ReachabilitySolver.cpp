@@ -1,13 +1,13 @@
 #include "Solver/ReachabilitySolver.hpp"
 namespace assas {
 
-    void ReachabilitySolver::getInitialSymbolsMap(Add2SymbolsMap& initialSymbolMap) {
+    void ReachabilitySolver::getInitialSymbolsMap(Add2SymbolsMap& initialSymbolsMap) {
         Symbol initialSymbol = dnss -> getInitialSymbol();
-        initialSymbolMap[dnss -> getAddressMap()[initialSymbol]].insert(initialSymbol);
+        initialSymbolsMap[dnss -> getAddressMap()[initialSymbol]].insert(initialSymbol);
         for (auto& mapPair : dnss -> getSuperOperationsMap()) {
             for (Operation* op : mapPair.second) {
                 Symbol symbol = op -> getSymbol();
-                initialSymbolMap[getAddress(symbol)].insert(symbol);
+                initialSymbolsMap[getAddress(symbol)].insert(symbol);
             }
         }
     }

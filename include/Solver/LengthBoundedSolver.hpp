@@ -17,7 +17,7 @@ namespace assas {
     class LengthBoundedSolver : public ReachabilitySolver {
     private:
         nuxmv::NuXmv nuxvm;                 ///< solve FST reachability.
-        ID maxLength;                       ///< the maximal length of stack.
+        ID maxHeight;                       ///< the maximal height of stack.
         Add2IDsMap availablePositions;      ///< the available positions for each address.
 
         void mkVirtualOpsMap(Add2SymbolsMap& add2SymbolsMap, Add2OperationsMap& add2OpsMap);
@@ -29,7 +29,7 @@ namespace assas {
 
         /// \brief Construction function with params.
         /// \param s DNSS.
-        LengthBoundedSolver(DNSS* s) : ReachabilitySolver(s) {}
+        LengthBoundedSolver(DNSS* s, ID h = MAX_HEIGHT) : ReachabilitySolver(s), maxHeight(h) {}
 
         ~LengthBoundedSolver() {
         }

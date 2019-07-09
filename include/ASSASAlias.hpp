@@ -1,6 +1,8 @@
 #ifndef ASSASAlias_hpp
 #define ASSASAlias_hpp
 
+#define MAX_HEIGHT 100
+
 #include <stdio.h>
 #include <string>
 #include <vector>
@@ -15,7 +17,27 @@
 #include "../../Utility/Utility.hpp"
 using namespace std;
 using namespace nuxmv;
+namespace std {
+    template<typename T, typename U>
+    struct hash<pair<T, U> > {
+    public:
+        size_t operator()(const pair<T, U> &p) const {
+            return std::hash<T>()(p.first) ^ std::hash<U>()(p.second);
+        }
+    };
 
+    template<typename T>
+    struct hash<unordered_set<T> > {
+    public:
+        size_t operator()(const unordered_set<T> &hashSet) const {
+            size_t size = 0;
+            for (auto item : hashSet) {
+                size = size ^ std::hash<T>()(item);
+            }
+            return size;
+        }
+    };
+}
 namespace assas {
     class Action;
     class Activity;
@@ -53,6 +75,7 @@ namespace assas {
     typedef unordered_set<Action*> Actions;
     typedef unordered_set<Address> Addresses;
     typedef unordered_set<Operation*> Operations;
+    typedef unordered_set<Symbols> PowerSymbols;
 
     typedef unordered_map<Symbol, IDs> IDsMap;
     typedef unordered_map<string, Activity*> ActMap;
@@ -65,6 +88,8 @@ namespace assas {
     typedef unordered_map<Activity*, Actions> LaunchMap;
     typedef unordered_map<Symbol, Operations> OperationsMap;
     typedef unordered_map<Address, OperationsMap> Add2OperationsMap;
+    typedef unordered_map<ID, PowerSymbols> ID2PowerSymbolsMap;
+    typedef unordered_map<Symbol, ID2PowerSymbolsMap> Symbol2ID2PowerSymbolsMap;
 }
 
 #endif /* ASSASAlias_hpp */

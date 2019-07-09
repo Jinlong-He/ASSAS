@@ -15,7 +15,7 @@ namespace assas {
     /// \brief Interface of Reachabilityability Solver.
     class ReachabilitySolver : public Object{
     protected:
-        DNSS* dnss;         ///< the DNSS to be solved.
+        DNSS* dnss;             ///< the DNSS to be solved.
     public:
         /// \brief Default construction function.
         ReachabilitySolver() : dnss(nullptr) {}
