@@ -15,17 +15,28 @@ namespace assas {
     }
 
     void DNSS::load(ASM* a) {
-        initialSymbol = a -> getMainActivity() -> getID();
+        unordered_map<Activity*, Symbol> actMap;
+        unordered_map<Affinity*, Symbol> aftMap;
+        Address address = 1;
+        for (Affinity* aft : a -> getAffinities()) {
+            aftMap[aft] = address;
+            addresses.insert(address++);
+        }
+        Symbol symbol = 1;
         for (Activity* act : a -> getActivities()) {
-            Symbol symbol = act -> getID();
+            actMap[act] = symbol;
+            addressMap[symbol] = aftMap[act -> getAft()];
+            alphabet.insert(symbol++);
+        }
+        for (Activity* act : a -> getActivities()) {
+            Symbol symbol = actMap[act];
+            if (act == a -> getMainActivity()) {
+                initialSymbol = symbol;
+            }
             Lmd lmd = act -> getLmd();
-            Address address = act -> getAft() -> getID();
-            addresses.insert(address);
-            alphabet.insert(symbol);
-            addressMap[symbol] = address;
             for (auto& mapPair : act -> getLaunchMap()) {
                 Activity* tAct = mapPair.first;
-                Symbol tSymbol = tAct -> getID();
+                Symbol tSymbol = actMap[tAct];
                 Lmd tLmd = tAct -> getLmd();
                 for (Action* action : mapPair.second) {
                     Alpha alpha = action -> getAlpha();

@@ -13,38 +13,19 @@
 #include <math.h>
 #include <ostream>
 #include <fstream>
-#include "../../WriteNuXmv/NuXmv.hpp"
+#include "../../NuXmvFST/NuXmvFST.hpp"
 #include "../../Utility/Utility.hpp"
 using namespace std;
-using namespace nuxmv;
-namespace std {
-    template<typename T, typename U>
-    struct hash<pair<T, U> > {
-    public:
-        size_t operator()(const pair<T, U> &p) const {
-            return std::hash<T>()(p.first) ^ std::hash<U>()(p.second);
-        }
-    };
+using namespace nuxmvfst;
+using namespace utility;
 
-    template<typename T>
-    struct hash<unordered_set<T> > {
-    public:
-        size_t operator()(const unordered_set<T> &hashSet) const {
-            size_t size = 0;
-            for (auto item : hashSet) {
-                size = size ^ std::hash<T>()(item);
-            }
-            return size;
-        }
-    };
-}
 namespace assas {
     class Action;
     class Activity;
     class Affinity;
     class Operation;
     class DNSS;
-    class NuXmv;
+    class NuXmvFST;
     class Object;
     class Manage;
 
@@ -61,21 +42,23 @@ namespace assas {
     typedef pair<Symbol, Beta> ExPort;
     typedef pair<Symbol, Type> EnPort;
 
+    typedef vector<ID> Order;
     typedef vector<FLAG> FLAGs;
     typedef vector<Symbol> RegEx;
+    typedef vector<Order> Orders;
     typedef vector<string> strings;
     typedef vector<ExPort> ExPorts;
     typedef vector<EnPort> EnPorts;
-    typedef vector<Activity*> ActVec;
+    typedef vector<Activity*> Activities;
+    typedef vector<Affinity*> Affinities;
 
     typedef unordered_set<ID> IDs;
     typedef unordered_set<Activity*> Acts;
-    typedef unordered_set<Affinity*> Afts;
     typedef unordered_set<Symbol> Symbols;
     typedef unordered_set<Action*> Actions;
     typedef unordered_set<Address> Addresses;
     typedef unordered_set<Operation*> Operations;
-    typedef unordered_set<Symbols> PowerSymbols;
+    typedef unordered_set<Symbols, SetHash<Symbol> > PowerSymbols;
 
     typedef unordered_map<Symbol, IDs> IDsMap;
     typedef unordered_map<string, Activity*> ActMap;
@@ -90,6 +73,8 @@ namespace assas {
     typedef unordered_map<Address, OperationsMap> Add2OperationsMap;
     typedef unordered_map<ID, PowerSymbols> ID2PowerSymbolsMap;
     typedef unordered_map<Symbol, ID2PowerSymbolsMap> Symbol2ID2PowerSymbolsMap;
+    typedef unordered_map<ID, Values> ID2ValuesMap;
+    typedef unordered_map<Order, ID, VectorHash<ID> > Order2IDMap;
 }
 
 #endif /* ASSASAlias_hpp */

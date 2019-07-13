@@ -16,9 +16,9 @@ namespace assas {
     /// \breif Android Stack Machine.
     class ASM : public Object {
     private:
-        Acts activities;            ///< the Activity set in ASM.
-        Afts affinities;            ///< the Affinity set in ASM.
-        Activity* mainActivity;     ///< the main Activity in ASM.
+        Activities activities;            ///< the Activity set in ASM.
+        Affinities affinities;            ///< the Affinity set in ASM.
+        Activity* mainActivity;           ///< the main Activity in ASM.
 
     public:
         /// \brief Default construction function.
@@ -35,7 +35,7 @@ namespace assas {
         /// \return Pointer of Activity.
         Activity* mkActivity(const string& name, Affinity* aft, Lmd lmd =Lmd::STD) {
             Activity* activity = new Activity(name, aft, lmd);
-            activities.insert(activity);
+            activities.push_back(activity);
             Manage::manage(activity);
             return activity;
         }
@@ -54,25 +54,29 @@ namespace assas {
         /// \param name The name of Affinity.
         Affinity* mkAffinity(const string& name) {
             Affinity* affinity = new Affinity(name);
-            affinities.insert(affinity);
+            affinities.push_back(affinity);
             Manage::manage(affinity);
             return affinity;
         }
 
-        /// \brief Deletes param activity in ASM.
-        /// \param activity To be deleted.
-        void delActivity(Activity* activity) {
-            activities.erase(activity);
-            delete activity;
-        }
-
         /// \brief Gets the activities.
         /// \return Reference of Acts.
-        Acts& getActivities() {
+        Activities& getActivities() {
             return activities;
         }
-        const Acts& getActivities() const {
+
+        const Activities& getActivities() const {
             return activities;
+        }
+
+        /// \brief Gets the affinities.
+        /// \return Reference of Acts.
+        Affinities& getAffinities() {
+            return affinities;
+        }
+
+        const Affinities& getAffinities() const {
+            return affinities;
         }
 
         /// \brief Gets the Main Activity.

@@ -20,22 +20,27 @@ namespace assas {
     /// \brief Affinity in the Android system.
     class Affinity : public Object {
     private:
-        static ID counter;          ///< the counter for Aft's id.
-        ID id;                      ///< the uniqe identity of this Aft.
         string affinityName;        ///< the name of this Aft.
     public:
+        /// \brief Default Construction function.
         Affinity() {}
+
+        /// \brief Construction function with param.
+        /// \param name Affinity name.
+        Affinity(const string& name) : affinityName(name) {}
+
+        /// \brief Desconstruction function.
         ~Affinity() {}
-        Affinity(const string& name) : id(counter++), affinityName(name) {}
-        ID getID() const {
-            return id;
-        }
+
+        /// \brief Gets affinity name.
+        /// \return String.
         const string& getName() const {
             return affinityName;
         }
         string& getName() {
             return affinityName;
         }
+
         friend ostream & operator<<( ostream & os, const Affinity& affinity) {
             cout << affinity.affinityName;
             return os;
@@ -45,8 +50,6 @@ namespace assas {
     /// \brief Activity in the Android system.
     class Activity : public Object {
     private:
-        static ID counter;          ///< the counter for Activity's id.
-        ID id;                      ///< the uniqe identity of this Activity.
         Affinity* affinity;         ///< the afinity attribute for this Activity.
         Lmd launchMode;             ///< the launch mode for this Activity.
         string activityName;        ///< the name for this Activity.
@@ -73,17 +76,10 @@ namespace assas {
 
         /// \brief Construction function with params.
         /// \param name The name for this Activity.
-        /// \param i The identity for this Activity.
         /// \param lmd The lunch mode for this Activity. default is STD.
         /// \param aft The affinity for this Activity. default is "".
-        Activity(const string& name,  Affinity* aft, Lmd lmd = Lmd::STD) : id(counter++),  affinity(aft), launchMode(lmd), activityName(name) {}
+        Activity(const string& name,  Affinity* aft, Lmd lmd = Lmd::STD) : affinity(aft), launchMode(lmd), activityName(name) {}
         
-        /// \brief Gets the id for this Activity.
-        /// \return ID.
-        ID getID() const {
-            return id;
-        }
-
         /// \brief Gets the affinity for this Activity.
         /// \return Pointer of Affinity.
         Affinity* getAft() const {

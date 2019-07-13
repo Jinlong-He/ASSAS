@@ -1,7 +1,5 @@
 #include "ASM/Activity.hpp"
 namespace assas {
-    ID Activity::counter = 0;
-    ID Affinity::counter = 0;
     ostream & operator<<( ostream & os, const Activity& activity) {
         string lmdStr = "";
         switch (activity.launchMode) {

@@ -22,14 +22,11 @@ namespace assas {
             newWork.clear();
         }
         if (liveActs.size() == activities.size()) return;
-        Acts delActs;
+        activities.clear();
+        affinities.clear();
+        activities.insert(activities.end(), liveActs.begin(), liveActs.end());
         for (Activity* act : activities) {
-            if (liveActs.count(act) == 0) {
-                delActs.insert(act);
-            }
-        }
-        for (Activity* act : delActs) {
-            delActivity(act);
+            affinities.push_back(act -> getAft());
         }
     }
 

@@ -18,9 +18,7 @@ namespace assas {
     /// \breif Action in the Android system.
     class Action : public Object {
     private:
-        static ID counter;      ///< the counter for Action's id.
         ID key;                 ///< the key for Action's flags and alpha.
-        ID id;                  ///< the identity for Action.
     public:
         /// \brief Default construction function.
         Action() : key(0) {}
@@ -31,7 +29,7 @@ namespace assas {
         /// \brief Construction function with params.
         /// \param fs The FLAGs for this Action.
         /// \param a The method to launch activity for this Action.
-        Action(const FLAGs& fs, Alpha a = start) : key(0), id(counter++) {
+        Action(const FLAGs& fs, Alpha a = start) : key(0) {
             setAlpha(a);
             for (FLAG f : fs) {
                 addFLAG(f);

@@ -109,7 +109,7 @@ namespace assas {
                 strVec = Utility::split(Utility::split(strs[i], ":")[1], " ");
             FLAGs flags;
             Alpha alpha = start;
-            for (string str : strVec) {
+            for (auto& str : strVec) {
                 if(str.find("FLAG_ACTIVITY_NEW_TASK") != -1) {
                     flags.push_back(NTK);
                 } else if(str.find("FLAG_ACTIVITY_CLEAR_TASK") != -1) {

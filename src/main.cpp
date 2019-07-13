@@ -1,6 +1,6 @@
 #include "Parse.hpp"
 #include "DNSS/DNSS.hpp"
-#include "Solver/LengthBoundedSolver.hpp"
+#include "ReachabilitySolver/BoundedReachabilitySolver.hpp"
 using namespace assas;
 unordered_set<Object*> Manage::buffer;
 int main(int argc, const char * argv[]) {
@@ -8,7 +8,7 @@ int main(int argc, const char * argv[]) {
     Parse parse(argv[1], argv[2], a);
     DNSS dnss(a);
     cout << dnss << endl;
-    LengthBoundedSolver solver(&dnss);
-    solver.mkAvailablePositions();
+    BoundedReachabilitySolver solver(&dnss, 5);
+    solver.init();
     delete a;
 }

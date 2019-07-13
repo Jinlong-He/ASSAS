@@ -1,6 +1,5 @@
 #include"ASM/Action.hpp"
 namespace assas {
-    ID Action::counter = 0;
     void Action::setAlpha(Alpha a) {
         switch(a) {
             case finish:
@@ -154,7 +153,7 @@ namespace assas {
         }
         FLAGs flags;
         action.getFLAGs(flags);
-        for (FLAG flag : flags) {
+        for (FLAG& flag : flags) {
             switch (flag) {
                 case NTK :
                     cout << "NTK ";

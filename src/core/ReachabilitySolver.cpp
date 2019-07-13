@@ -1,9 +1,9 @@
-#include "Solver/ReachabilitySolver.hpp"
+#include "ReachabilitySolver/ReachabilitySolver.hpp"
 namespace assas {
 
     void ReachabilitySolver::getInitialSymbolsMap(Add2SymbolsMap& initialSymbolsMap) {
         Symbol initialSymbol = dnss -> getInitialSymbol();
-        initialSymbolsMap[dnss -> getAddressMap()[initialSymbol]].insert(initialSymbol);
+        initialSymbolsMap[getAddress(initialSymbol)].insert(initialSymbol);
         for (auto& mapPair : dnss -> getSuperOperationsMap()) {
             for (Operation* op : mapPair.second) {
                 Symbol symbol = op -> getSymbol();
@@ -24,7 +24,7 @@ namespace assas {
             Symbols& symbols = add2SymbolsMap[address];
             OperationsMap& opsMap = add2OpsMap[address];
             while (work.size() > 0) {
-                for (Symbol symbol : work) {
+                for (auto& symbol : work) {
                     if (operationsMap.count(symbol) > 0) {
                         Operations& operations = operationsMap[symbol];
                         opsMap[symbol] = operations;
