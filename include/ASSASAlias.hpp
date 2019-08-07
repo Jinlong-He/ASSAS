@@ -41,6 +41,8 @@ namespace assas {
 
     typedef pair<Symbol, Beta> ExPort;
     typedef pair<Symbol, Type> EnPort;
+    typedef pair<Symbol, Operation*> Transition;
+    typedef pair<Address, ID> IDPair;
 
     typedef vector<ID> Order;
     typedef vector<FLAG> FLAGs;
@@ -75,6 +77,8 @@ namespace assas {
     typedef unordered_map<Symbol, ID2PowerSymbolsMap> Symbol2ID2PowerSymbolsMap;
     typedef unordered_map<ID, Values> ID2ValuesMap;
     typedef unordered_map<Order, ID, VectorHash<ID> > Order2IDMap;
+    typedef unordered_map<Transition, ID, PairHash<ID, Operation*> > Transition2IDMap;
+    typedef unordered_map<IDPair, ID, PairHash<ID, ID> > IDPair2IDMap;
 }
 
 #endif /* ASSASAlias_hpp */

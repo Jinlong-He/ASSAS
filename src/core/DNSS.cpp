@@ -2,7 +2,7 @@
 namespace assas {
     Operation* DNSS::mkOperation(Symbol symbol, Beta beta, Type type, Symbol tSymbol) {
         Operation* operation = new Operation(beta, type, tSymbol);
-        if (beta == Beta::START || beta == Beta::FINISH) {
+        if (operation -> isSuper()) {
             superOpsMap[symbol].insert(operation);
         } else {
             operationsMap[symbol].insert(operation);

@@ -12,3 +12,6 @@ activity:C
 LaunchMode:std
 TaskAffinity:2
 
+activity:D
+LaunchMode:std
+TaskAffinity:2

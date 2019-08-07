@@ -20,24 +20,46 @@ namespace assas {
         ID stackNumber;                     ///< the number of stack.
         Add2IDsMap availablePositions;      ///< the available positions for each address.
         Order2IDMap orderMap;               
+        Transition2IDMap transMap;
+        IDPair2IDMap varMap;
         Orders orders;
 
         void mkVirtualOpsMap(Add2SymbolsMap& add2SymbolsMap, Add2OperationsMap& add2OpsMap);
 
         void mkAvailablePositions(Add2SymbolsMap& initialSymbolsMap, Add2SymbolsMap& add2SymbolsMap, Add2OperationsMap& add2OpsMap);
 
-        ConjunctionExp* mkTopExp(ID sID, ID pos, Symbol symbol);
+        ConjunctionExp* mkTopStackExp(Address add, ID pos, Symbol symbol);
+        DisjunctionExp* mkTopStackExp(Address add, Symbol symbol);
+        ConjunctionExp* mkTargetTopStackExp(Address add, ID pos);
+        ConjunctionExp* mkTargetTopStackExp(Address add, ID pos, Symbol symbol);
+        DisjunctionExp* mkTopOrderExp(Address add);
+        DisjunctionExp* mkTopOrderExp(Address sAdd, Address tAdd);
+        ConjunctionExp* mkTopExp(Address add, ID pos, Symbol symbol, Expression* expression);
 
-        ConjunctionExp* mkCheckExp(Address add, ID pos, ID topID, Symbol symbol, ConjunctionExp* expression);
+        ConjunctionExp* mkCheckSymbolExp(Address add, ID pos, ID topID, Symbol symbol, Expression* expression);
+
+        ConjunctionExp* mkCheckNegSymbolExp(Address add, Symbol symbol, ID topID, Expression* expression);
+
+
+        void mkLchTsk(Address add, Symbol symbol, Address targetAdd, Symbol targetSymbol, Expression* expression);
+        void mkPush(Address add, ID pos, Symbol symbol, Expression* exp, bool finish = false);
+        void mkMv2Top(Address add, ID pos, Symbol symbol, Expression* exp);
+        void mkClrTop(Address add, ID pos, Symbol symbol, Expression* exp);
+        void mkClrTsk(Address add, ID pos, Symbol symbol, Expression* exp);
 
         void mkTrans(Address add, Symbol symbol, Operation* operation);
+        void mkSuperTrans(Address add, Symbol symbol, Operation* operation);
 
-        Var* getSymbolVar(ID sID, ID pos) {
-            return fst -> getVars()[(sID - 1) * stackHeight + pos];
+        Var* getSymbolVar(Address add, ID pos) {
+            return fst -> getVars()[varMap[IDPair(add, pos)]];
         }
 
         Var* getOrderVar() {
             return fst -> getVars()[0];
+        }
+
+        Var* getVar() {
+            return fst -> getVars()[1];
         }
 
         Value* getSymbolValue(Symbol symbol) {
@@ -52,7 +74,11 @@ namespace assas {
             return fst -> getValues()[orderMap[o]];
         }
 
-        void mkValues(Add2SymbolsMap& add2SymbolsMap, ID2ValuesMap& id2ValuesMap);
+        Value* getTransValue(Transition& trans) {
+            return fst -> getValues()[transMap[trans]];
+        }
+
+        void mkValues(Add2SymbolsMap& add2SymbolsMap, ID2ValuesMap& id2ValuesMap, Values& orderValues, Values& transValues);
     public:
 
         void init();

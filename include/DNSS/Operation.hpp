@@ -44,6 +44,24 @@ namespace assas {
             return type;
         }
 
+        /// \brief Gets whether this Operation is Pop Operation.
+        /// \return Boolean.
+        bool isPop() const {
+            return beta == Beta::pop;
+        }
+
+        /// \brief Gets whether this Operation is Super Operation.
+        /// \return Boolean.
+        bool isSuper() const {
+            return (beta == Beta::START || beta == Beta::FINISH);
+        }
+
+        /// \brief Gets whether this Operation is Start Operation.
+        /// \return Boolean.
+        bool isFinish() const {
+            return (beta == Beta::FINISH|| beta == Beta::finish);
+        }
+
         friend ostream & operator<<( ostream & os, const Operation& o);
     };
 }

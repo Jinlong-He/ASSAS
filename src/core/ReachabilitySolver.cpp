@@ -23,6 +23,7 @@ namespace assas {
             Address address = mapPair.first;
             Symbols& symbols = add2SymbolsMap[address];
             OperationsMap& opsMap = add2OpsMap[address];
+            symbols.insert(work.begin(), work.end());
             while (work.size() > 0) {
                 for (auto& symbol : work) {
                     if (operationsMap.count(symbol) > 0) {
