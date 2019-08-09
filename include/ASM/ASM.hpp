@@ -14,7 +14,7 @@
 namespace assas {
 
     /// \breif Android Stack Machine.
-    class ASM : public Object {
+    class ASM : public ASSASObject {
     private:
         Activities activities;            ///< the Activity set in ASM.
         Affinities affinities;            ///< the Affinity set in ASM.
@@ -36,7 +36,7 @@ namespace assas {
         Activity* mkActivity(const string& name, Affinity* aft, Lmd lmd =Lmd::STD) {
             Activity* activity = new Activity(name, aft, lmd);
             activities.push_back(activity);
-            Manage::manage(activity);
+            ASSASManage::manage(activity);
             return activity;
         }
 
@@ -55,7 +55,7 @@ namespace assas {
         Affinity* mkAffinity(const string& name) {
             Affinity* affinity = new Affinity(name);
             affinities.push_back(affinity);
-            Manage::manage(affinity);
+            ASSASManage::manage(affinity);
             return affinity;
         }
 

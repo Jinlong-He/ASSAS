@@ -10,7 +10,7 @@ namespace assas {
         if (type == Type::CTP || type == Type::RTF) {
             checkSymbols.insert(tSymbol);
         }
-        Manage::manage(operation);
+        ASSASManage::manage(operation);
         return operation;
     }
 

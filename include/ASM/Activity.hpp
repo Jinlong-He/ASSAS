@@ -18,7 +18,7 @@ namespace assas {
     class ASM;
 
     /// \brief Affinity in the Android system.
-    class Affinity : public Object {
+    class Affinity : public ASSASObject {
     private:
         string affinityName;        ///< the name of this Aft.
     public:
@@ -48,7 +48,7 @@ namespace assas {
     };
 
     /// \brief Activity in the Android system.
-    class Activity : public Object {
+    class Activity : public ASSASObject {
     private:
         Affinity* affinity;         ///< the afinity attribute for this Activity.
         Lmd launchMode;             ///< the launch mode for this Activity.

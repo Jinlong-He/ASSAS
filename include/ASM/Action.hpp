@@ -9,14 +9,14 @@
 #ifndef Action_hpp
 #define Action_hpp
 
-#include "../Object.hpp"
+#include "../ASSASObject.hpp"
 
 using namespace std;
 
 namespace assas {
 
     /// \breif Action in the Android system.
-    class Action : public Object {
+    class Action : public ASSASObject {
     private:
         ID key;                 ///< the key for Action's flags and alpha.
     public:

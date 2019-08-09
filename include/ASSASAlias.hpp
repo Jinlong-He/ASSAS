@@ -2,6 +2,7 @@
 #define ASSASAlias_hpp
 
 #define MAX_HEIGHT 100
+#define NUXMV_PATH "./nuxmv/bin/nuxmv "
 
 #include <stdio.h>
 #include <string>
@@ -15,9 +16,11 @@
 #include <fstream>
 #include "../../NuXmvFST/NuXmvFST.hpp"
 #include "../../Utility/Utility.hpp"
+#include "../../CGH/include/CGH.hpp"
 using namespace std;
 using namespace nuxmvfst;
 using namespace utility;
+using namespace cgh;
 
 namespace assas {
     class Action;
@@ -37,7 +40,8 @@ namespace assas {
     enum class Type {PUSH, CTK, CTP, STP, RTF, LTK};
     enum class Beta {pop, start, finish, START, FINISH};
 
-    typedef size_t ID, Symbol, Address;
+    typedef size_t ID, Address;
+    typedef long Symbol;
 
     typedef pair<Symbol, Beta> ExPort;
     typedef pair<Symbol, Type> EnPort;
@@ -61,6 +65,8 @@ namespace assas {
     typedef unordered_set<Address> Addresses;
     typedef unordered_set<Operation*> Operations;
     typedef unordered_set<Symbols, SetHash<Symbol> > PowerSymbols;
+    typedef vector<Symbols> Word;
+    typedef vector<Word> Words;
 
     typedef unordered_map<Symbol, IDs> IDsMap;
     typedef unordered_map<string, Activity*> ActMap;
@@ -79,6 +85,10 @@ namespace assas {
     typedef unordered_map<Order, ID, VectorHash<ID> > Order2IDMap;
     typedef unordered_map<Transition, ID, PairHash<ID, Operation*> > Transition2IDMap;
     typedef unordered_map<IDPair, ID, PairHash<ID, ID> > IDPair2IDMap;
+    typedef unordered_map<DFAState<Symbol>*, Symbols> State2SymbolsMap;
+    typedef unordered_map<DFAState<Symbol>*, State2SymbolsMap> TransMap;
+    typedef unordered_map<Address, DFA<Symbol>*> DFAMap;
+    typedef unordered_map<Address, RegEx> RegExMap;
 }
 
 #endif /* ASSASAlias_hpp */

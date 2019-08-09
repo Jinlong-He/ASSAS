@@ -23,6 +23,7 @@ namespace assas {
         Transition2IDMap transMap;
         IDPair2IDMap varMap;
         Orders orders;
+        Symbols alphabet;
 
         void mkVirtualOpsMap(Add2SymbolsMap& add2SymbolsMap, Add2OperationsMap& add2OpsMap);
 
@@ -49,17 +50,18 @@ namespace assas {
 
         void mkTrans(Address add, Symbol symbol, Operation* operation);
         void mkSuperTrans(Address add, Symbol symbol, Operation* operation);
+        void mkInitialTrans();
 
         Var* getSymbolVar(Address add, ID pos) {
             return fst -> getVars()[varMap[IDPair(add, pos)]];
         }
 
         Var* getOrderVar() {
-            return fst -> getVars()[0];
+            return fst -> getVars()[1];
         }
 
         Var* getVar() {
-            return fst -> getVars()[1];
+            return fst -> getVars()[0];
         }
 
         Value* getSymbolValue(Symbol symbol) {
@@ -79,8 +81,21 @@ namespace assas {
         }
 
         void mkValues(Add2SymbolsMap& add2SymbolsMap, ID2ValuesMap& id2ValuesMap, Values& orderValues, Values& transValues);
-    public:
 
+        Operation* mkOperation(Beta beta, Type type, Symbol symbol) {
+            Operation* operation = new Operation(beta, type, symbol);
+            ASSASManage::manage(operation);
+            return operation;
+        }
+
+        bool checkWord(Address add, Word& word);
+        Expression* mkContainsExp(DFA<Symbol>& dfa);
+        Expression* mkStackExp(Address add, Word& word);
+        void getWords(DFA<Symbol>& dfa, Words& words);
+
+        Expression* mkReachExp(DFAMap& dfaMap);
+
+    public:
         void init();
 
         /// \brief Default construction function.
@@ -88,22 +103,28 @@ namespace assas {
 
         /// \brief Construction function with params.
         /// \param s DNSS.
-        BoundedReachabilitySolver(DNSS* s, ID h = MAX_HEIGHT) : ReachabilitySolver(s), fst(nullptr), stackHeight(h), stackNumber(s -> getAddresses().size()) {}
+        BoundedReachabilitySolver(DNSS* s, ID h = MAX_HEIGHT) : ReachabilitySolver(s), fst(nullptr), stackHeight(h), stackNumber(s -> getAddresses().size()), alphabet(s -> getAlphabet()) {
+            //Symbol symbol = alphabet.size();
+            //alphabet.insert(symbol);
+            //alphabet.insert(symbol);
+        }
 
         /// \brief Desconstruction function and deletes fst.
         ~BoundedReachabilitySolver() {
             delete fst;
         }
 
-        Operation* mkOperation(Beta beta, Type type, Symbol symbol) {
-            Operation* operation = new Operation(beta, type, symbol);
-            Manage::manage(operation);
-            return operation;
-        }
-
         bool isReachable(const RegEx& regEx) {
             return true;
         }
+
+        bool isReachable(const RegExMap& regExMap);
+
+        bool contains(const RegEx& regEx);
+
+        void getPath(const string& terminal);
+
+        void verify();
 
     };
 }

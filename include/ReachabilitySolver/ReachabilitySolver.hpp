@@ -13,7 +13,7 @@
 namespace assas {
 
     /// \brief Interface of Reachabilityability Solver.
-    class ReachabilitySolver : public Object{
+    class ReachabilitySolver : public ASSASObject{
     protected:
         DNSS* dnss;             ///< the DNSS to be solved.
     public:
@@ -38,6 +38,12 @@ namespace assas {
         /// \param regEx Given configuration.
         /// \return Boolean.
         virtual bool isReachable(const RegEx& regEx) = 0;
+        virtual bool isReachable(const RegExMap& regExMap) = 0;
+
+        /// \brief Decides whether param regEx which is a sub configuration that is reachable from initial configuration.
+        /// \param regEx Given configuration.
+        /// \return Boolean.
+        virtual bool contains(const RegEx& regEx) = 0;
 
         /// \brief Gets Address of param symbol.
         /// \param symbol

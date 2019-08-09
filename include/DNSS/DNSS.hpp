@@ -14,7 +14,7 @@
 namespace assas {
 
     /// \breif Doubly Nested Stack System.
-    class DNSS : public Object {
+    class DNSS : public ASSASObject {
     private:
         Symbol initialSymbol;           ///< the initial symbol for this DNSS.
         Symbols alphabet;               ///< the alphabet for this DNSS.
