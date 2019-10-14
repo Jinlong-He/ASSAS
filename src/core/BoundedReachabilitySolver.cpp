@@ -5,14 +5,14 @@ Manage manage;
 ID nuxmvfst::Var::counter = 0;
 ID nuxmvfst::Value::counter = 0;
 template<> assas::Symbol cgh::FA<assas::Symbol>::epsilon = 0;
-template<> assas::Symbol cgh::Config<assas::Symbol>::leftBracket = -1;
-template<> assas::Symbol cgh::Config<assas::Symbol>::rightBracket = -2;
-template<> assas::Symbol cgh::Config<assas::Symbol>::qustion = -3;
-template<> assas::Symbol cgh::Config<assas::Symbol>::plus = -4;
-template<> assas::Symbol cgh::Config<assas::Symbol>::star = -5;
-template<> assas::Symbol cgh::Config<assas::Symbol>::concat = -6;
-template<> assas::Symbol cgh::Config<assas::Symbol>::mid = -7;
-template<> assas::Symbol cgh::Config<assas::Symbol>::dot = -8;
+template<> assas::Symbol cgh::Config<assas::Symbol>::leftBracket = lb;
+template<> assas::Symbol cgh::Config<assas::Symbol>::rightBracket = rb;
+template<> assas::Symbol cgh::Config<assas::Symbol>::qustion = qm;
+template<> assas::Symbol cgh::Config<assas::Symbol>::plus = pm;
+template<> assas::Symbol cgh::Config<assas::Symbol>::star = sm;
+template<> assas::Symbol cgh::Config<assas::Symbol>::concat = cm;
+template<> assas::Symbol cgh::Config<assas::Symbol>::mid = mm;
+template<> assas::Symbol cgh::Config<assas::Symbol>::dot = dm;
 
 namespace assas {
     void BoundedReachabilitySolver::mkAvailablePositions(Add2SymbolsMap& initialSymbolsMap, Add2SymbolsMap& add2SymbolsMap, Add2OperationsMap& add2OpsMap) {

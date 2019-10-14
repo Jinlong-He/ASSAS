@@ -74,6 +74,9 @@ namespace assas {
         }
     }
 
+    void DNSS::decideStackBounded() {
+    }
+
     ostream & operator<<( ostream & os, const DNSS& dnss) {
         for (auto& mapPair : dnss.operationsMap) {
             for (Operation* op : mapPair.second) {

@@ -3,6 +3,14 @@
 
 #define MAX_HEIGHT 100
 #define NUXMV_PATH "./nuxmv/bin/nuxmv "
+#define lb -1
+#define rb -2
+#define qm -3
+#define pm -4
+#define sm -5
+#define cm -6
+#define mm -7
+#define dm -8
 
 #include <stdio.h>
 #include <string>
